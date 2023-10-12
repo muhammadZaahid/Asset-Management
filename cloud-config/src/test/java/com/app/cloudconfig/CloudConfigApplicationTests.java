@@ -1,10 +1,10 @@
-package com.app.aggregator;
+package com.app.cloudconfig;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AggregatorApplicationTests {
+class CloudConfigApplicationTests {
 
 	@Test
 	void contextLoads() {
