@@ -1,6 +1,7 @@
 package com.app.maintenance.model;
 
 import com.app.asset.model.Asset;
+import com.app.technician.model.Technician;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.UUID;
@@ -26,8 +27,9 @@ public class Maintenance {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "technician")
-    private String technician;
+    @ManyToOne
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
 
     public Maintenance() {
         // Default constructor
@@ -75,11 +77,11 @@ public class Maintenance {
         this.description = description;
     }
 
-    public String getTechnician() {
+    public Technician getTechnician() {
         return technician;
     }
 
-    public void setTechnician(String technician) {
+    public void setTechnician(Technician technician) {
         this.technician = technician;
     }
 
