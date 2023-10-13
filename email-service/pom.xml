@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>
-			<version>1.6.2</version> <!-- Gantilah versi sesuai kebutuhan Anda -->
+			<version>1.6.2</version>
 		</dependency>
 
 		<!-- Spring Web Starter -->
