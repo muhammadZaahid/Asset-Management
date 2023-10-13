@@ -62,9 +62,9 @@ public class MaintenanceController {
         }
     }
 
-    @GetMapping("/technician/{technician}")
-    public ResponseEntity<List<Maintenance>> getMaintenancesByTechnician(@PathVariable String technician) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByTechnician(technician);
+    @GetMapping("/technician/{technicianId}")
+    public ResponseEntity<List<Maintenance>> getMaintenancesByTechnician(@PathVariable String technicianId) {
+        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByTechnician(technicianId);
         return ResponseEntity.ok(maintenanceList);
     }
 
@@ -94,9 +94,9 @@ public class MaintenanceController {
         return ResponseEntity.ok(maintenanceList);
     }
 
-    @GetMapping("/total-cost-for-asset")
-    public ResponseEntity<Double> calculateTotalMaintenanceCostForAsset(@RequestParam Asset asset) {
-        Double totalCost = maintenanceService.calculateTotalMaintenanceCostForAsset(asset);
+    @GetMapping("/total-maintenance-cost")
+    public ResponseEntity<Double> calculateTotalMaintenanceCostForAsset() {
+        Double totalCost = maintenanceService.calculateTotalMaintenanceCostForAsset();
         return ResponseEntity.ok(totalCost);
     }
 

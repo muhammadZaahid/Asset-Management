@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MaintenanceRepository extends JpaRepository<Maintenance, String> {
     List<Maintenance> findByAsset(Asset asset);
-    List<Maintenance> findByTechnician(String technician);
+    List<Maintenance> findByTechnicianId(String technicianId);
     List<Maintenance> findByMaintenanceDateBetween(Date startDate, Date endDate);
     List<Maintenance> findByAssetAndMaintenanceDateBetween(Asset asset, Date startDate, Date endDate);
     List<Maintenance> findByAssetAndCostBetween(Asset asset, Double minCost, Double maxCost);

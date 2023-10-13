@@ -64,8 +64,8 @@ public class MaintenanceService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintenance record not found");
     }
 
-    public List<Maintenance> getMaintenancesByTechnician(String technician) {
-        return maintenanceRepository.findByTechnician(technician);
+    public List<Maintenance> getMaintenancesByTechnician(String technicianId) {
+        return maintenanceRepository.findByTechnicianId(technicianId);
     }
 
     public List<Maintenance> getMaintenancesWithinDateRange(Date startDate, Date endDate) {
@@ -80,8 +80,8 @@ public class MaintenanceService {
         return maintenanceRepository.findByAssetAndCostBetween(asset, minCost, maxCost);
     }
 
-    public Double calculateTotalMaintenanceCostForAsset(Asset asset) {
-        List<Maintenance> maintenances = maintenanceRepository.findByAsset(asset);
+    public Double calculateTotalMaintenanceCostForAsset() {
+        List<Maintenance> maintenances = maintenanceRepository.findAll();
         return maintenances.stream()
                 .mapToDouble(Maintenance::getCost)
                 .sum();

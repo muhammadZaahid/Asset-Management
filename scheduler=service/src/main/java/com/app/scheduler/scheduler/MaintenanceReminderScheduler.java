@@ -1,7 +1,9 @@
 package com.app.scheduler.scheduler;
 
+import com.app.email.service.EmailService;
 import com.app.maintenance.model.Maintenance;
 import com.app.scheduler.service.ReminderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
@@ -10,14 +12,17 @@ import java.util.List;
 
 @Component
 public class MaintenanceReminderScheduler {
-    private final ReminderService reminderService;
 
-    public MaintenanceReminderScheduler(ReminderService reminderService) {
+    private final ReminderService reminderService;
+    private final EmailService emailService;
+
+    @Autowired
+    public MaintenanceReminderScheduler(ReminderService reminderService, EmailService emailService) {
         this.reminderService = reminderService;
+        this.emailService = emailService;
     }
 
-    // Penjadwalan untuk mengingatkan tentang pemeliharaan pada pukul 9 pagi setiap hari jika sesuai
-    @Scheduled(cron = "0 30 23 * * ?")
+    @Scheduled(cron = "0 50 23 * * ?")
     public void sendMaintenanceReminders() {
         List<Maintenance> todayReminders = reminderService.getRemindersForToday();
 
@@ -28,13 +33,11 @@ public class MaintenanceReminderScheduler {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             if (sdf.format(today).equals(sdf.format(maintenanceDate))) {
-                // Mengambil alamat email penerima dari pengingat atau aset yang sesuai
                 String recipientEmail = reminder.getTechnician().getEmail();
 
                 String subject = "Pengingat Pemeliharaan";
                 String messageText = "Hari ini adalah tanggal pemeliharaan untuk aset Anda.";
 
-                // Mengirim email
                 emailService.sendEmail(recipientEmail, subject, messageText);
             }
         }
