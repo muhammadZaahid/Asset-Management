@@ -90,5 +90,9 @@ public class MaintenanceService {
     public List<Maintenance> getMaintenancesByDescriptionContaining(String keyword) {
         return maintenanceRepository.findByDescriptionContaining(keyword);
     }
+
+    public Maintenance saveMaintenanceTask(Maintenance maintenanceTask) {
+        return maintenanceRepository.save(maintenanceTask);
+    }
 }
 

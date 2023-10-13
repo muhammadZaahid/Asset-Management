@@ -3,6 +3,8 @@ package com.app.maintenance.controller;
 import com.app.asset.model.Asset;
 import com.app.maintenance.model.Maintenance;
 import com.app.maintenance.service.MaintenanceService;
+import com.app.technician.model.Technician;
+import com.app.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +13,17 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/maintenance")
+    @RequestMapping("/maintenance")
 public class MaintenanceController {
 
-    private final MaintenanceService maintenanceService;
-
     @Autowired
-    public MaintenanceController(MaintenanceService maintenanceService) {
+    private final MaintenanceService maintenanceService;
+    private final TechnicianService technicianService;
+
+
+    public MaintenanceController(MaintenanceService maintenanceService, TechnicianService technicianService) {
         this.maintenanceService = maintenanceService;
+        this.technicianService = technicianService;
     }
 
     @PostMapping
@@ -105,6 +110,19 @@ public class MaintenanceController {
         List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByDescriptionContaining(keyword);
         return ResponseEntity.ok(maintenanceList);
     }
+
+    @PutMapping("/assign-technician/{maintenanceId}/{technicianId}")
+    public Maintenance assignTechnicianToMaintenance(@PathVariable String maintenanceId, @PathVariable String technicianId) {
+        Maintenance maintenance = maintenanceService.getMaintenanceById(maintenanceId);
+
+        Technician technician = technicianService.getTechnicianById(technicianId);
+
+        maintenance.setTechnician(technician);
+        Maintenance updatedMaintenanceTask = maintenanceService.saveMaintenanceTask(maintenance);
+
+        return updatedMaintenanceTask;
+    }
+
 }
 
 
