@@ -1,13 +1,13 @@
 FROM openjdk:17.0.1-jdk-slim
 
-ENV HOST_POSTGRES=127.0.0.1
-ENV PORT_POSTGRES=5432
-ENV DB_POSTGRES=asset
-ENV USERNAME_POSTGRES=postgres
-ENV PASSWORD_POSTGRES=postgres
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/asset
+ENV SPRING_DATASOURCE_USERNAME=postgres
+ENV SPRING_DATASOURCE_PASSWORD=postgres
 
 WORKDIR /app
 
-COPY target/registry-service.jar /app/registry-service.jar
+EXPOSE 8761
 
-CMD ["java", "-jar", "registry-service.jar"]
+COPY target/registry-0.0.1-SNAPSHOT.jar .
+
+CMD ["java", "-jar", "registry-0.0.1-SNAPSHOT.jar"]
