@@ -1,6 +1,5 @@
 package com.app.technician.service.impl;
 
-import com.app.asset.model.Asset;
 import com.app.technician.dto.BaseRes;
 import com.app.technician.dto.TechnicianInsertReq;
 import com.app.technician.dto.TechnicianRes;
@@ -100,10 +99,10 @@ public class TechnicianServiceImpl implements TechnicianService {
         if (technician !=null) {
             technicianRepository.deleteById(id);
             response.setId(id);
-            response.setMessage("Asset deleted successfully");
+            response.setMessage("Technician deleted successfully");
         } else {
             response.setId(id);
-            response.setMessage("Asset not found");
+            response.setMessage("Technician not found");
         }
 
         return response;
