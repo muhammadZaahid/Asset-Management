@@ -1,46 +1,21 @@
 package com.app.asset.service;
 
+import com.app.asset.dto.*;
 import com.app.asset.model.Asset;
-import com.app.asset.repository.AssetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class AssetService {
+public interface AssetService {
 
-    @Autowired
-    private AssetRepository assetRepository;
+    public List<AssetRes> getAllAssets() throws Exception;
 
-    public List<Asset> getAllAssets() {
-        return assetRepository.findAll();
-    }
+    public AssetRes getAssetById(String id) throws Exception;
 
-    public Optional<Asset> getAssetById(String id) {
-        return assetRepository.findById(id);
-    }
+    public AssetInsertRes createAsset(AssetInsertReq request) throws Exception;
 
-    public Asset createAsset(Asset asset) {
-        return assetRepository.save(asset);
-    }
+    AssetUpdateRes updateAsset(String id, AssetUpdateReq request);
 
-    public Asset updateAsset(String id, Asset asset) {
-        if (assetRepository.existsById(id)) {
-            asset.setId(id);
-            return assetRepository.save(asset);
-        }
-        return null; // Handle error or validation as needed
-    }
-
-    public ResponseEntity<?> deleteAsset(String id) {
-        if (assetRepository.existsById(id)) {
-            assetRepository.deleteById(id);
-            return ResponseEntity.ok("Asset deleted successfully");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Asset not found");
-    }
+    AssetDeleteRes deleteAsset(String id);
 }
