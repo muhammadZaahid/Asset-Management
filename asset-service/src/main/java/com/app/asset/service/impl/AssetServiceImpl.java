@@ -36,7 +36,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public AssetRes getAssetById(String id) throws Exception {
+    public AssetRes getAssetById(String id){
 
         final Asset asset = repository.findAssetById(id);
         if (asset == null) {
@@ -58,7 +58,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public AssetInsertRes createAsset(AssetInsertReq request) throws Exception {
+    public AssetInsertRes createAsset(AssetInsertReq request){
         Asset asset = new Asset();
         asset.setSerialNumber(request.getSerialNumber());
         asset.setAssetName(request.getAssetName());

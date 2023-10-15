@@ -13,23 +13,6 @@ public class AssetRes {
     private String warrantyEndDate;
     private String maintenanceNotes;
 
-    public AssetRes(String id, String serialNumber, String assetName, String description, String location, boolean inUse, Double purchasePrice, String purchaseDate, String warrantyEndDate, String maintenanceNotes) {
-        this.id = id;
-        this.serialNumber = serialNumber;
-        this.assetName = assetName;
-        this.description = description;
-        this.location = location;
-        this.inUse = inUse;
-        this.purchasePrice = purchasePrice;
-        this.purchaseDate = purchaseDate;
-        this.warrantyEndDate = warrantyEndDate;
-        this.maintenanceNotes = maintenanceNotes;
-    }
-
-    public AssetRes() {
-
-    }
-
     public String getId() {
         return id;
     }

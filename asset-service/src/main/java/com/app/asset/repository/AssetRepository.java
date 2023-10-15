@@ -1,6 +1,5 @@
 package com.app.asset.repository;
 
-import com.app.asset.dto.AssetRes;
 import com.app.asset.model.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
