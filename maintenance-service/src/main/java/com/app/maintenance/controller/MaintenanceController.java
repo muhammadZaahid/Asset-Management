@@ -1,11 +1,16 @@
 package com.app.maintenance.controller;
 
 import com.app.asset.model.Asset;
+import com.app.maintenance.dto.*;
 import com.app.maintenance.model.Maintenance;
 import com.app.maintenance.service.MaintenanceService;
+import com.app.technician.dto.TechnicianRes;
+import com.app.technician.dto.TechnicianUpdateReq;
 import com.app.technician.model.Technician;
 import com.app.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,76 +32,66 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Maintenance> createMaintenance(@RequestBody Maintenance maintenance) {
-        return ResponseEntity.ok(maintenanceService.createMaintenance(maintenance));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Maintenance> getMaintenance(@PathVariable String id) {
-        Maintenance maintenance = maintenanceService.getMaintenanceById(id);
-        if (maintenance != null) {
-            return ResponseEntity.ok(maintenance);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<BaseRes> createMaintenance(@RequestBody MaintenanceInsertReq request) {
+        BaseRes response = maintenanceService.createMaintenance(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Maintenance>> getAllMaintenances() {
-        List<Maintenance> maintenanceList = maintenanceService.getAllMaintenances();
-        return ResponseEntity.ok(maintenanceList);
+    public ResponseEntity<List<MaintenanceRes>> getAllMaintenances() {
+        List<MaintenanceRes> response = maintenanceService.getAllMaintenances();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/history/{assetId}")
+    public ResponseEntity<List<MaintenanceRes>> getMaintenanceHistoryForAsset(@PathVariable String assetId){
+        List<MaintenanceRes> response = maintenanceService.getMaintenanceHistoryForAsset(assetId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MaintenanceRes> getMaintenanceById(@PathVariable String id) {
+        MaintenanceRes response = maintenanceService.getMaintenanceById(id);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Maintenance> updateMaintenance(@PathVariable String id, @RequestBody Maintenance updatedMaintenance) {
-        Maintenance updated = maintenanceService.updateMaintenance(id, updatedMaintenance);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
+    public ResponseEntity<BaseRes> updateMaintenance(@PathVariable String id, @RequestBody MaintenanceUpdateReq request) {
+        BaseRes response = maintenanceService.updateMaintenance(id, request);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMaintenance(@PathVariable String id) {
-        ResponseEntity<?> response = maintenanceService.deleteMaintenance(id);
-        if (response.getStatusCode() == ResponseEntity.ok().build().getStatusCode()) {
-            return ResponseEntity.ok("Maintenance deleted successfully");
+    public ResponseEntity<BaseRes> deleteMaintenance(@PathVariable String id) {
+        BaseRes response = maintenanceService.deleteMaintenance(id);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return ResponseEntity.status(response.getStatusCode()).body("Maintenance record not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/technician/{technicianId}")
-    public ResponseEntity<List<Maintenance>> getMaintenancesByTechnician(@PathVariable String technicianId) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByTechnician(technicianId);
-        return ResponseEntity.ok(maintenanceList);
+    public ResponseEntity<List<MaintenanceRes>> getMaintenancesByTechnician(@PathVariable String technicianId) {
+        List<MaintenanceRes> response = maintenanceService.getMaintenancesByTechnician(technicianId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
     @GetMapping("/date-range")
-    public ResponseEntity<List<Maintenance>> getMaintenancesWithinDateRange(
-            @RequestParam Date startDate,
-            @RequestParam Date endDate) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesWithinDateRange(startDate, endDate);
-        return ResponseEntity.ok(maintenanceList);
-    }
+    public ResponseEntity<List<MaintenanceRes>>  getMaintenanceRecordsInDateRange(
+            @RequestParam("startDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date endDate) {
 
-    @GetMapping("/asset-date-range")
-    public ResponseEntity<List<Maintenance>> getMaintenancesByAssetAndDateRange(
-            @RequestParam Asset asset,
-            @RequestParam Date startDate,
-            @RequestParam Date endDate) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByAssetAndDateRange(asset, startDate, endDate);
-        return ResponseEntity.ok(maintenanceList);
-    }
+        List<MaintenanceRes> response = maintenanceService.getMaintenancesWithinDateRange(startDate, endDate);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
-    @GetMapping("/asset-cost-range")
-    public ResponseEntity<List<Maintenance>> getMaintenancesByAssetAndCostRange(
-            @RequestParam Asset asset,
-            @RequestParam Double minCost,
-            @RequestParam Double maxCost) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByAssetAndCostRange(asset, minCost, maxCost);
-        return ResponseEntity.ok(maintenanceList);
     }
 
     @GetMapping("/total-maintenance-cost")
@@ -105,22 +100,12 @@ public class MaintenanceController {
         return ResponseEntity.ok(totalCost);
     }
 
-    @GetMapping("/description/{keyword}")
-    public ResponseEntity<List<Maintenance>> getMaintenancesByDescriptionContaining(@PathVariable String keyword) {
-        List<Maintenance> maintenanceList = maintenanceService.getMaintenancesByDescriptionContaining(keyword);
-        return ResponseEntity.ok(maintenanceList);
-    }
-
     @PutMapping("/assign-technician/{maintenanceId}/{technicianId}")
-    public Maintenance assignTechnicianToMaintenance(@PathVariable String maintenanceId, @PathVariable String technicianId) {
-        Maintenance maintenance = maintenanceService.getMaintenanceById(maintenanceId);
+    public ResponseEntity<AssignTechnicianRes> assignTechnicianToMaintenance(@PathVariable String maintenanceId, @PathVariable String technicianId) {
 
-        Technician technician = technicianService.getTechnicianById(technicianId);
-
-        maintenance.setTechnician(technician);
-        Maintenance updatedMaintenanceTask = maintenanceService.saveMaintenanceTask(maintenance);
-
-        return updatedMaintenanceTask;
+        MaintenanceRes maintenance = maintenanceService.getMaintenanceById(maintenanceId);
+        AssignTechnicianRes response = maintenanceService.saveMaintenanceTask(technicianId,maintenance);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
