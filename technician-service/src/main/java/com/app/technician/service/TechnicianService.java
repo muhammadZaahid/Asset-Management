@@ -1,5 +1,10 @@
 package com.app.technician.service;
 
+import com.app.asset.dto.AssetDeleteRes;
+import com.app.technician.dto.BaseRes;
+import com.app.technician.dto.TechnicianInsertReq;
+import com.app.technician.dto.TechnicianRes;
+import com.app.technician.dto.TechnicianUpdateReq;
 import com.app.technician.model.Technician;
 import com.app.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,51 +12,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class TechnicianService {
+public interface TechnicianService {
 
-    @Autowired
-    private final TechnicianRepository technicianRepository;
+    BaseRes createTechnician(TechnicianInsertReq request);
 
-    public TechnicianService(TechnicianRepository technicianRepository) {
-        this.technicianRepository = technicianRepository;
-    }
+    List<TechnicianRes> getAllTechnicians();
 
-    public Technician createTechnician(Technician technician) {
-        return technicianRepository.save(technician);
-    }
+    TechnicianRes getTechnicianById(String id);
 
-    public List<Technician> getAllTechnicians() {
-        return technicianRepository.findAll();
-    }
+    BaseRes updateTechnician(String id, TechnicianUpdateReq request);
 
-    public Technician getTechnicianById(String id) {
-        return technicianRepository.findById(id).orElse(null);
-    }
-
-    public Technician updateTechnician(String id, Technician updatedTechnician) {
-        Technician existingTechnician = getTechnicianById(id);
-
-        if (existingTechnician != null) {
-            existingTechnician.setName(updatedTechnician.getName());
-            existingTechnician.setPhoneNumber(updatedTechnician.getPhoneNumber());
-            existingTechnician.setEmail(updatedTechnician.getEmail());
-
-            return technicianRepository.save(existingTechnician);
-        }
-
-        return null;
-    }
-
-    public boolean deleteTechnician(String id) {
-        Technician existingTechnician = getTechnicianById(id);
-
-        if (existingTechnician != null) {
-            technicianRepository.delete(existingTechnician);
-            return true;
-        }
-
-        return false;
-    }
-
+    BaseRes deleteTechnician(String id);
 }
