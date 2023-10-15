@@ -1,19 +1,19 @@
 package com.app.asset.controller;
 
-import com.app.asset.model.Asset;
+import com.app.asset.dto.*;
 import com.app.asset.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/assets")
 public class AssetController {
 
-    private final AssetService assetService;
+    final AssetService assetService;
 
     @Autowired
     public AssetController(AssetService assetService) {
@@ -21,27 +21,42 @@ public class AssetController {
     }
 
     @GetMapping
-    public List<Asset> getAllAssets() {
-        return assetService.getAllAssets();
+    public ResponseEntity<List<AssetRes>> getAllAssets() throws Exception {
+
+        final List<AssetRes> response = assetService.getAllAssets();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Optional<Asset> getAssetById(@PathVariable String id) {
-        return assetService.getAssetById(id);
+    public ResponseEntity<AssetRes> getAssetById(@PathVariable String id) throws Exception {
+        final AssetRes response = assetService.getAssetById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public Asset createAsset(@RequestBody Asset asset) {
-        return assetService.createAsset(asset);
+    public ResponseEntity<AssetInsertRes> createAsset(@RequestBody AssetInsertReq request) throws Exception {
+        AssetInsertRes response = assetService.createAsset(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Asset updateAsset(@PathVariable String id, @RequestBody Asset asset) {
-        return assetService.updateAsset(id, asset);
+    public ResponseEntity<AssetUpdateRes> updateAsset(@PathVariable String id, @RequestBody AssetUpdateReq request) throws Exception {
+        AssetUpdateRes response = assetService.updateAsset(id, request);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAsset(@PathVariable String id) {
-        return assetService.deleteAsset(id);
+    public ResponseEntity<AssetDeleteRes> deleteAsset(@PathVariable String id) {
+        AssetDeleteRes response = assetService.deleteAsset(id);
+
+        if (response.getMessage().equals("Asset deleted successfully")) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
     }
 }
