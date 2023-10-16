@@ -1,0 +1,211 @@
+version: '3'
+services:
+  postgres1:
+    image: postgres:latest
+    container_name: postgres1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data1:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres2:
+    image: postgres:latest
+    container_name: postgres2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres-data2:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres3:
+    image: postgres:latest
+    container_name: postgres3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5434:5434"
+    volumes:
+      - postgres-data3:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres4:
+    image: postgres:latest
+    container_name: postgres4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5435:5435"
+    volumes:
+      - postgres-data4:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres5:
+    image: postgres:latest
+    container_name: postgres5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5436:5436"
+    volumes:
+      - postgres-data5:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres6:
+    image: postgres:latest
+    container_name: postgres6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: asset
+    ports:
+      - "5437:5437"
+    volumes:
+      - postgres-data6:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  registry-service:
+    build:
+      context: ./registry-service
+      dockerfile: Dockerfile
+    container_name: registry-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres1:5432/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8761:8761"
+    depends_on:
+      - postgres1
+    networks:
+      - my-network
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5433/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres2
+    networks:
+      - my-network
+
+  asset-service:
+    build:
+      context: ./asset-service
+      dockerfile: Dockerfile
+    container_name: asset-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres3:5434/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres3
+    networks:
+      - my-network
+
+  technician-service:
+    build:
+      context: ./technician-service
+      dockerfile: Dockerfile
+    container_name: technician-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres4:5435/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres4
+    networks:
+      - my-network
+
+  maintenance-service:
+    build:
+      context: ./maintenance-service
+      dockerfile: Dockerfile
+    container_name: maintenance-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres5:5436/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres5
+    networks:
+      - my-network
+
+  email-service:
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    container_name: email-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres6:5437/asset
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres6
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  postgres-data1:
+  postgres-data2:
+  postgres-data3:
+  postgres-data4:
+  postgres-data5:
+  postgres-data6:

@@ -6,8 +6,8 @@ ENV SPRING_DATASOURCE_PASSWORD=postgres
 
 WORKDIR /app
 
-EXPOSE 8083
+EXPOSE 8085
 
-COPY target/maintenance-0.0.1-SNAPSHOT.jar .
+COPY target/gateway-0.0.1-SNAPSHOT.jar .
 
-CMD ["java", "-jar", "maintenance-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "gateway-0.0.1-SNAPSHOT.jar"]
