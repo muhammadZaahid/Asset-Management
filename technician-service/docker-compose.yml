@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: asset
     ports:
-      - "5432:5432"
+      - "5435:5435"
     networks:
       - my-network
     volumes:
@@ -27,7 +27,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
-      - "8083:8083"
+      - "8082:8082"
     depends_on:
       - postgres
     networks:
