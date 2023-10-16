@@ -110,7 +110,7 @@ Request Body :
 
 ### Request
 
-`POST /assets`
+`PUT /assets/{id}`
 
 Request Body :
 ```
@@ -134,3 +134,49 @@ Request Body :
       "id": "342a1a3e-cc5a-4977-ba07-aab059587edd",
       "message": "Asset updated successfully"
     }
+
+## Get Asset
+
+### Request
+
+`GET /assets/{id}`
+
+### Response
+
+   ```
+   {
+    "id": "8b81ec53-1447-459c-aff4-1042694fe3ac",
+    "serialNumber": "MCRV-1",
+    "assetName": "Microwave",
+    "description": "This is Asset of Zanomori",
+    "location": "Kanto Pusat Jakarta Selatan",
+    "inUse": true,
+    "purchasePrice": 3680000.0,
+    "purchaseDate": "2023-01-20",
+    "warrantyEndDate": "2023-01-20",
+    "maintenanceNotes": "Perlu dilakukan maintenance 3 bulan sekali"
+}
+   ```
+
+## Delete Asset
+
+### Request
+
+`DELETE /assets/{id}`
+
+### Response
+
+   ```
+   {
+    "id": "8b81ec53-1447-459c-aff4-1042694fe3ac",
+    "serialNumber": "MCRV-1",
+    "assetName": "Microwave",
+    "description": "This is Asset of Zanomori",
+    "location": "Kanto Pusat Jakarta Selatan",
+    "inUse": true,
+    "purchasePrice": 3680000.0,
+    "purchaseDate": "2023-01-20",
+    "warrantyEndDate": "2023-01-20",
+    "maintenanceNotes": "Perlu dilakukan maintenance 3 bulan sekali"
+}
+   ```
