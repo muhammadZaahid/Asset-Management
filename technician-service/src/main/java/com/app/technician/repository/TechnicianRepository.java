@@ -1,6 +1,5 @@
 package com.app.technician.repository;
 
-import com.app.asset.model.Asset;
 import com.app.technician.model.Technician;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

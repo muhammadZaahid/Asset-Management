@@ -1,6 +1,5 @@
 package com.app.technician.service;
 
-import com.app.asset.dto.AssetDeleteRes;
 import com.app.technician.dto.BaseRes;
 import com.app.technician.dto.TechnicianInsertReq;
 import com.app.technician.dto.TechnicianRes;
