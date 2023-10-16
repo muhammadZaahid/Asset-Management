@@ -299,11 +299,12 @@ Request Body :
 ```
 
 ### Response
-
+```
 {
-"id": "c58bf9dd-9da1-435e-9313-15352e9cace5",
-"message": "Maintenance created successfully"
+  "id": "c58bf9dd-9da1-435e-9313-15352e9cace5",
+  "message": "Maintenance created successfully"
 }
+```
 
 ## Update Maintenance
 
