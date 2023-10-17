@@ -129,6 +129,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5433/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-service:8761/eureka/
     ports:
       - "8001:8001"
     depends_on:
@@ -145,6 +146,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-service:8761/eureka/
     ports:
       - "8081:8081"
     depends_on:
@@ -161,6 +163,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-service:8761/eureka/
     ports:
       - "8082:8082"
     depends_on:
@@ -177,6 +180,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-service:8761/eureka/
     ports:
       - "8083:8083"
     depends_on:
@@ -193,6 +197,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres6:5437/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-service:8761/eureka/
     ports:
       - "8084:8084"
     depends_on:
