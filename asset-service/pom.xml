@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<version>42.6.0</version>
 		</dependency>
 
 		<dependency>
@@ -79,14 +79,12 @@
 	</dependencyManagement>
 
 	<build>
-		<pluginManagement>
-			<plugins>
+		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			</plugins>
-		</pluginManagement>
+		</plugins>
 	</build>
 
 </project>

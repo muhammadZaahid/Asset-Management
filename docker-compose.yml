@@ -34,7 +34,7 @@ services:
       timeout: 5s
       retries: 5
 
-  postgres3:
+  postgres:
     image: postgres:latest
     container_name: postgres3
     environment:
@@ -43,10 +43,12 @@ services:
       POSTGRES_DB: asset
     ports:
       - "5434:5434"
+    networks:
+      - my-network
     volumes:
-      - postgres-data3:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -140,13 +142,13 @@ services:
       dockerfile: Dockerfile
     container_name: asset-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres3:5434/asset
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8081:8081"
     depends_on:
-      - postgres3
+      - postgres
     networks:
       - my-network
 
@@ -156,13 +158,13 @@ services:
       dockerfile: Dockerfile
     container_name: technician-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres4:5435/asset
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8082:8082"
     depends_on:
-      - postgres4
+      - postgres
     networks:
       - my-network
 
@@ -172,13 +174,13 @@ services:
       dockerfile: Dockerfile
     container_name: maintenance-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres5:5436/asset
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/asset
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8083:8083"
     depends_on:
-      - postgres5
+      - postgres
     networks:
       - my-network
 
@@ -205,7 +207,7 @@ networks:
 volumes:
   postgres-data1:
   postgres-data2:
-  postgres-data3:
+  postgres-data:
   postgres-data4:
   postgres-data5:
   postgres-data6:
